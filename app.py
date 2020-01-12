@@ -46,8 +46,11 @@ class Game(Tk):
     def title_screen(self):
         self.canvas.delete('all')
         self.canvas.create_rectangle(0, 0, WINDOW_SIZE, WINDOW_SIZE, fill=TITLE_COLOR, outline='')
-        self.canvas.create_text(WINDOW_SIZE/2, WINDOW_SIZE/3, text='TIC TAC TOE', fill='white', font=(FONT, int(-WINDOW_SIZE/12), 'bold'))
-        self.canvas.create_text(int(WINDOW_SIZE/2), int(WINDOW_SIZE/2.5), text='[play]', fill='white', font=(FONT, int(-WINDOW_SIZE/25)))
+        self.canvas.create_text(WINDOW_SIZE/2, WINDOW_SIZE/3, text='TIC TAC TOE', fill=BG_COLOR, font=(FONT, int(-WINDOW_SIZE/12), 'bold'))
+        self.canvas.create_text(int(WINDOW_SIZE/2), int(WINDOW_SIZE/2.5), text='[play]', fill=BG_COLOR, font=(FONT, int(-WINDOW_SIZE/25)))
+        self.canvas.create_text(int(WINDOW_SIZE/2), int(WINDOW_SIZE/1.25), text='first move:', fill=BG_COLOR, font=(FONT, int(-WINDOW_SIZE/25)))
+        self.canvas.create_text(int(WINDOW_SIZE/2), int(WINDOW_SIZE/1.15), text=('X' if FIRST_PLAYER==1 else 'O'), 
+            fill=X_COLOR if FIRST_PLAYER==1 else O_COLOR, font=(FONT, int(-WINDOW_SIZE/12)))
 
     def new_board(self):
         self.canvas.delete('all')
@@ -171,7 +174,10 @@ class Game(Tk):
         return True
 
     # Funkce umožňující detekci buňky, na kterou zrovna hráč klikl
-    def pixels_to_grid(self, pixel_coord):  
+    def pixels_to_grid(self, pixel_coord):
+        if pixel_coord >= WINDOW_SIZE:
+            pixel_coord = WINDOW_SIZE - 1    
+
         grid_coord = int(pixel_coord / CELL_SIZE)
         return grid_coord
 
