@@ -1,10 +1,11 @@
 from tkinter import *
 
 WINDOW_SIZE = 600
-CELL_SIZE = WINDOW_SIZE / 10
+TILES = 12
+CELL_SIZE = WINDOW_SIZE / TILES
 GRID_LINE_WIDTH = 2
-SYMBOL_SIZE = 0.1
-SYMBOL_WIDTH = WINDOW_SIZE/20
+SYMBOL_SIZE = 2 / (TILES*1.5)
+SYMBOL_WIDTH = WINDOW_SIZE / (TILES*2)
 
 BG_COLOR = 'white'
 TITLE_COLOR = 'black'
@@ -38,16 +39,7 @@ class Game(Tk):
         self.gamestate=STATE_TITLE_SCREEN
         self.title_screen()
 
-        self.board=[[EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY]]
+        self.board=[[EMPTY] * TILES for i in range(TILES)]
 
     def title_screen(self):
         self.canvas.delete('all')
@@ -61,18 +53,9 @@ class Game(Tk):
     def new_board(self):
         self.canvas.delete('all')
 
-        self.board=[[EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY]]
+        self.board=[[EMPTY] * TILES for i in range(TILES)]
 
-        for n in range(1, 10):
+        for n in range(1, TILES):
             # vertikálně
             self.canvas.create_line(CELL_SIZE*n, 0, CELL_SIZE*n, WINDOW_SIZE, width=GRID_LINE_WIDTH, fill=GRID_COLOR)
             # horizontálně
@@ -163,23 +146,23 @@ class Game(Tk):
 
     # Logika ukončení hry (výhra, remíza)
     def has_won(self, symbol):
-        for x in range(10):
-            for y in range(6):
+        for x in range(TILES):
+            for y in range(TILES-4):
                 if self.board[x][y] == self.board[x][y+1] == self.board[x][y+2] == self.board[x][y+3] == self.board[x][y+4] == symbol:
                     return True
 
-        for y in range(10):
-            for x in range(6):
+        for y in range(TILES):
+            for x in range(TILES-4):
                 if self.board[x][y] == self.board[x+1][y] == self.board[x+2][y] == self.board[x+3][y] == self.board[x+4][y] == symbol:
                     return True
         
-        for x in range(6):
-            for y in range(6):
+        for x in range(TILES-4):
+            for y in range(TILES-4):
                 if self.board[x][y] == self.board[x+1][y+1] == self.board[x+2][y+2] == self.board[x+3][y+3] == self.board[x+4][y+4] == symbol:
                     return True
         
-        for x in range(6):
-            for y in range(6):
+        for x in range(TILES-4):
+            for y in range(TILES-4):
                 if self.board[x][y+4] == self.board[x+1][y+3] == self.board[x+2][y+2] == self.board[x+3][y+1] == self.board[x+4][y] == symbol:
                     return True
         
