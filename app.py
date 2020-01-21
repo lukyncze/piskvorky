@@ -1,7 +1,7 @@
 from tkinter import *
 
 WINDOW_SIZE = 600
-TILES = 12
+TILES = 15
 CELL_SIZE = WINDOW_SIZE / TILES
 GRID_LINE_WIDTH = 2
 SYMBOL_SIZE = 2 / (TILES*1.5)
@@ -34,7 +34,8 @@ class Game(Tk):
         self.canvas.pack()
 
         self.canvas.bind('<Button-1>', self.click)
-        self.bind('<Escape>', self.exit)
+        self.bind('<r>', self.restart)
+        self.bind('<q>', self.exit)
 
         self.gamestate=STATE_TITLE_SCREEN
         self.title_screen()
@@ -186,6 +187,10 @@ class Game(Tk):
     def grid_to_pixels(self, grid_coord):
         pixel_coord = grid_coord * CELL_SIZE + CELL_SIZE / 2
         return pixel_coord
+
+    def restart(self, event):
+        self.gamestate=STATE_TITLE_SCREEN
+        self.title_screen()
 
     def exit(self, event):
         self.destroy()
